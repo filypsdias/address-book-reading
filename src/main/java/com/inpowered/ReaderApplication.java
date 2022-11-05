@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * and how many days older Bill is than Paul.
  *
  * @author Filipe Lima
- * @version 1.0.1
+ * @version 1.1.1
  */
 public class ReaderApplication {
 
@@ -68,17 +68,30 @@ public class ReaderApplication {
       if (personIntel[0].contains("Bill")) {
         billsBirthday = formatter.parse(personIntel[BIRTHDAY_POSITION].strip());
       } else if (personIntel[0].contains("Paul")) {
-        paulsBirthday = formatter.parse(personIntel[BIRTHDAY_POSITION ].strip());
+        paulsBirthday = formatter.parse(personIntel[BIRTHDAY_POSITION].strip());
       }
     }
 
-    long diffInMilliseconds = Math.abs(paulsBirthday.getTime() - billsBirthday.getTime());
-    long diff = TimeUnit.DAYS.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);
+    long diff = calculateDateDifferenceInDays(paulsBirthday, billsBirthday);
 
     System.out.println("There are " + malesCount + " males in the address book");
     System.out.println(
         "The oldest person in the address book is " + oldestName + ", who was born in " + oldest);
     System.out.println("Bill is " + diff + " days older than Paul");
 
+  }
+
+  /**
+   * Calculate difference between to given dates.
+   * Given two java.util.Date parameters, this method will calculate the absolute difference in days
+   * about the two dates.
+   *
+   * @param firstDate  first date to compare
+   * @param secondDate second date to compare
+   * @return the absolute difference between the two dates (no negative difference)
+   */
+  private static long calculateDateDifferenceInDays(final Date firstDate, final Date secondDate) {
+    long diffInMilliseconds = Math.abs(firstDate.getTime() - secondDate.getTime());
+    return TimeUnit.DAYS.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);
   }
 }
