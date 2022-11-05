@@ -16,21 +16,21 @@ import java.util.concurrent.TimeUnit;
  * and how many days older Bill is than Paul.
  *
  * @author Filipe Lima
- * @version 1.1.1
+ * @version 1.2.1
  */
 public class ReaderApplication {
+
+  static final int NAME_POSITION = 0;
+  static final int GENDER_POSITION = 1;
+  static final int BIRTHDAY_POSITION = 2;
+  static final String DATE_PATTERN_FORMAT = "dd/MM/yy";
+  static final String FILE_SPLIT_REGEX = ",";
 
   //TODO: change that into different classes. Let's do the logic in one place first
   public static void main(String[] args) throws IOException, ParseException {
 
     //Steps:
     //Read File -> Analyze oldest person -> Days older
-
-    final int NAME_POSITION = 0;
-    final int GENDER_POSITION = 1;
-    final int BIRTHDAY_POSITION = 2;
-    final String DATE_PATTERN_FORMAT = "dd/MM/yy";
-    final String FILE_SPLIT_REGEX = ",";
 
     //File Reader
     File file = new File("src/main/resources/AddressBook.txt");
@@ -73,11 +73,7 @@ public class ReaderApplication {
     }
 
     long diff = calculateDateDifferenceInDays(paulsBirthday, billsBirthday);
-
-    System.out.println("There are " + malesCount + " males in the address book");
-    System.out.println(
-        "The oldest person in the address book is " + oldestName + ", who was born in " + oldest);
-    System.out.println("Bill is " + diff + " days older than Paul");
+    displayResults(malesCount, oldestName, oldest, diff);
 
   }
 
@@ -93,5 +89,25 @@ public class ReaderApplication {
   private static long calculateDateDifferenceInDays(final Date firstDate, final Date secondDate) {
     long diffInMilliseconds = Math.abs(firstDate.getTime() - secondDate.getTime());
     return TimeUnit.DAYS.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);
+  }
+
+  /**
+   * Display results on terminal/console.
+   * This method will display the results on user's console: Males Count, person Name/Birthday and
+   * Bill's & Paul's days difference
+   *
+   * @param malesCount number of males records in the address book
+   * @param oldestName oldest person's name in the address book
+   * @param oldestDate oldest person's birthday in the address book
+   * @param diff       difference between birthdays
+   */
+  private static void displayResults(final int malesCount,
+                                     final String oldestName,
+                                     final Date oldestDate, final long diff) {
+    System.out.println("There are " + malesCount + " males in the address book");
+    System.out.println(
+        "The oldest person in the address book is " + oldestName + ", who was born in " +
+            oldestDate);
+    System.out.println("Bill is " + diff + " days older than Paul");
   }
 }
