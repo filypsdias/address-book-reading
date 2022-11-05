@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * and how many days older Bill is than Paul.
  *
  * @author Filipe Lima
- * @version 1.0.0
+ * @version 1.0.1
  */
 public class ReaderApplication {
 
@@ -26,7 +26,11 @@ public class ReaderApplication {
     //Steps:
     //Read File -> Analyze oldest person -> Days older
 
-    //TODO: set specific variables for positions of intel in array
+    final int NAME_POSITION = 0;
+    final int GENDER_POSITION = 1;
+    final int BIRTHDAY_POSITION = 2;
+    final String DATE_PATTERN_FORMAT = "dd/MM/yy";
+    final String FILE_SPLIT_REGEX = ",";
 
     //File Reader
     File file = new File("src/main/resources/AddressBook.txt");
@@ -43,37 +47,37 @@ public class ReaderApplication {
     String st;
     int malesCount = 0;
     while ((st = br.readLine()) != null) {
-      String[] personIntel = st.split(",");
+      String[] personIntel = st.split(FILE_SPLIT_REGEX);
 
-      SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy");
-      Date personIntelBirthday = formatter.parse(personIntel[2].strip());
+      SimpleDateFormat formatter = new SimpleDateFormat(DATE_PATTERN_FORMAT);
+      Date personIntelBirthday = formatter.parse(personIntel[BIRTHDAY_POSITION].strip());
 
       //TODO: remove time from date after
       if (personIntelBirthday.compareTo(oldest) < 0) {
         oldest = personIntelBirthday;
-        oldestName = personIntel[0].strip();
+        oldestName = personIntel[NAME_POSITION].strip();
       }
 
       //"String".equals avoids NullPointerException
       //Ex.: "Male".equals(null) -> False
       // null.equals("Male") -> NullPointerException
-      if ("Male".equals(personIntel[1].strip())) {
+      if ("Male".equals(personIntel[GENDER_POSITION].strip())) {
         malesCount++;
       }
 
       if (personIntel[0].contains("Bill")) {
-        billsBirthday = formatter.parse(personIntel[2].strip());
+        billsBirthday = formatter.parse(personIntel[BIRTHDAY_POSITION].strip());
       } else if (personIntel[0].contains("Paul")) {
-        paulsBirthday = formatter.parse(personIntel[2].strip());
+        paulsBirthday = formatter.parse(personIntel[BIRTHDAY_POSITION ].strip());
       }
     }
 
-    long diffInMillies = Math.abs(paulsBirthday.getTime() - billsBirthday.getTime());
-    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+    long diffInMilliseconds = Math.abs(paulsBirthday.getTime() - billsBirthday.getTime());
+    long diff = TimeUnit.DAYS.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);
 
-    System.out.println("There are " + malesCount + " males in the file");
+    System.out.println("There are " + malesCount + " males in the address book");
     System.out.println(
-        "The oldest person in the file is" + oldestName + ", who was born in " + oldest);
+        "The oldest person in the address book is " + oldestName + ", who was born in " + oldest);
     System.out.println("Bill is " + diff + " days older than Paul");
 
   }
