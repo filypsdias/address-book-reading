@@ -1,4 +1,4 @@
-package main.java.com.inpowered;
+package com.inpowered;
 
 import java.io.BufferedReader;
 import java.io.File;
