@@ -27,21 +27,27 @@ public class ReaderApplication {
   static final String FILE_SPLIT_REGEX = ",";
 
   public static void main(String[] args) throws IOException, ParseException {
-    addressBookReader();
+    String filePath = "src/main/resources/AddressBook.txt";
+    if (args.length > 0) {
+      filePath = args[0];
+    }
+
+    addressBookReader(filePath);
   }
 
   /**
    * Read a AddressBook file and returns it intel.
    *
+   * @param filePath Address Book path on system
    * @throws IOException    IOException if the File cannot be found or cannot be read
    * @throws ParseException ParseException if the parser is not able to parse given a specific regex
    */
-  private static void addressBookReader() throws IOException, ParseException {
+  private static void addressBookReader(final String filePath) throws IOException, ParseException {
     //Steps:
     //Read File -> Analyze oldest person -> Days older
 
     //File Reader
-    File file = new File("src/main/resources/AddressBook.txt");
+    File file = new File(filePath);
     BufferedReader br = new BufferedReader(new FileReader(file));
 
     //Default Date for comparison
@@ -91,7 +97,7 @@ public class ReaderApplication {
    * @param secondDate second date to compare
    * @return the absolute difference between the two dates (no negative difference)
    */
-  private static long calculateDateDifferenceInDays(final Date firstDate, final Date secondDate) {
+  public static long calculateDateDifferenceInDays(final Date firstDate, final Date secondDate) {
     long diffInMilliseconds = Math.abs(firstDate.getTime() - secondDate.getTime());
     return TimeUnit.DAYS.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);
   }
