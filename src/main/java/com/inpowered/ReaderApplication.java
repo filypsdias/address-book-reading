@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * and how many days older Bill is than Paul.
  *
  * @author Filipe Lima
- * @version 1.2.1
+ * @version 2.2.1
  */
 public class ReaderApplication {
 
@@ -26,9 +26,17 @@ public class ReaderApplication {
   static final String DATE_PATTERN_FORMAT = "dd/MM/yy";
   static final String FILE_SPLIT_REGEX = ",";
 
-  //TODO: change that into different classes. Let's do the logic in one place first
   public static void main(String[] args) throws IOException, ParseException {
+    addressBookReader();
+  }
 
+  /**
+   * Read a AddressBook file and returns it intel.
+   *
+   * @throws IOException    IOException if the File cannot be found or cannot be read
+   * @throws ParseException ParseException if the parser is not able to parse given a specific regex
+   */
+  private static void addressBookReader() throws IOException, ParseException {
     //Steps:
     //Read File -> Analyze oldest person -> Days older
 
@@ -58,9 +66,7 @@ public class ReaderApplication {
         oldestName = personIntel[NAME_POSITION].strip();
       }
 
-      //"String".equals avoids NullPointerException
-      //Ex.: "Male".equals(null) -> False
-      // null.equals("Male") -> NullPointerException
+      //"String".equals avoids NullPointerException. (Ex.: "Male".equals(null) -> False // null.equals("Male") -> NullPointerException)
       if ("Male".equals(personIntel[GENDER_POSITION].strip())) {
         malesCount++;
       }
@@ -74,7 +80,6 @@ public class ReaderApplication {
 
     long diff = calculateDateDifferenceInDays(paulsBirthday, billsBirthday);
     displayResults(malesCount, oldestName, oldest, diff);
-
   }
 
   /**
